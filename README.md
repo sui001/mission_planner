@@ -130,6 +130,37 @@ The proxy was written and tested in a single session with the help of [Claude.ai
 
 ---
 
+## gps_status.py
+
+Reads the live GPS solution off the autopilot and says how good it is, without
+needing Mission Planner connected. Useful because "is RTK working" is a
+different question from "are corrections flowing", and the proxy can be
+perfectly healthy while the answer is still no.
+
+```
+python gps_status.py COM40
+```
+
+The number that matters is the fix type:
+
+| Fix type | Meaning | Rough accuracy |
+|---|---|---|
+| 3 | 3D fix | metres |
+| 4 | DGPS | under a metre |
+| 5 | RTK Float | decimetres |
+| 6 | RTK Fixed | centimetres |
+
+Float means corrections are arriving but carrier-phase ambiguities are not
+resolved yet. It normally reaches Fixed within a minute or two under open sky.
+Sitting on Float indefinitely is the signal worth chasing.
+
+**This cannot be tested indoors.** With no sky view the fix type is 1 and the
+satellite count is 0, which looks identical to corrections not arriving. Take
+it outside before concluding anything.
+
+Needs `pymavlink`. Note that only one program can hold the serial port, so
+disconnect Mission Planner first.
+
 ## Licence
 
 MIT — do what you like with it.
