@@ -86,6 +86,17 @@ python ntrip_proxy.py --server ntrip.data.gnss.ga.gov.au --port 443 \
 
 Log in to [gnss.ga.gov.au/stream](https://gnss.ga.gov.au/stream) to see which mountpoints your account has access to, or use `--list` to fetch the sourcetable directly.
 
+**Mind the naming.** Every GA mountpoint is a four-letter station code followed
+by `00AUS0`, so Gungahlin is `GNGN00AUS0`, not `GNGNAUS0`. Dropping the `00` is
+easy and the symptom is unhelpful: the caster accepts the connection, returns
+`ICY 200 OK`, then closes it without sending a byte. That reads as a broken
+proxy rather than a typo.
+
+`--list` is the fastest way to settle it. The sourcetable also carries each
+station's latitude and longitude, so it can be sorted by distance from you.
+Correction quality drops roughly 1 to 1.5 cm per 10 km, so the nearest
+mountpoint is usually the right one.
+
 For most users in Australia, a mountpoint close to your location will give the best RTK accuracy. Correction quality degrades roughly 1–1.5 cm per 10 km from the reference station.
 
 ---
