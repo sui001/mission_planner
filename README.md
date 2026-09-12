@@ -107,6 +107,32 @@ Although written to solve the GA/AUSCORS problem, this proxy works with any NTRI
 
 ---
 
+## start_grover.bat: one click for RTK plus Mission Planner
+
+`start_grover.bat` starts the proxy, waits until it is actually listening, then
+launches Mission Planner, and stops the proxy again when Mission Planner
+closes.
+
+The waiting matters. The proxy has to be up **before** Mission Planner tries to
+connect, or the NTRIP box fails and has to be reconnected by hand. The batch
+polls for the port rather than guessing at a sleep, and after about 15 seconds
+gives up and starts Mission Planner anyway, so a caster outage does not stop
+you flying without RTK.
+
+Edit the three paths at the top for your machine: `PYTHON`, `MP` and `CONFIG`.
+Credentials are not in the batch file, they come from the JSON that
+`run_ntrip.py` reads.
+
+Two things learned making it work, in case you adapt it:
+
+- **Do not use `timeout` to wait.** It fails outright with "Input redirection
+  is not supported" whenever stdin is not a console, which includes shortcuts
+  and schedulers. `ping -n 2 127.0.0.1 >nul` works everywhere.
+- **Do not kill the proxy by window title.** The process is `python.exe`, the
+  title given to `start` is not reliably what ends up on the window, and a
+  failed `taskkill` is silent, so the port stays held and the next run cannot
+  bind. `stop_ntrip.py` kills by port instead, which is exact.
+
 ## Running Automatically
 
 If you want the proxy to start with Windows, create a batch file:
