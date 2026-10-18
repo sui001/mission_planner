@@ -1,5 +1,9 @@
 # ntrip_proxy.py
 
+> **Archived 19 Oct 2026.** This still works as it stands, and stays here to
+> read and use. Development has moved into a private project repo, so this
+> copy will not get further changes.
+
 A lightweight NTRIP TLS proxy that lets Mission Planner (and other NTRIP clients that don't support TLS) connect to modern HTTPS-only NTRIP casters.
 
 **Co-authored by [Sui Jackson](https://github.com/YOUR_HANDLE) and [Claude.ai](https://claude.ai)**
